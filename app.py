@@ -35,29 +35,29 @@ llm.provider_stop_sequence_key_name_map = {"meta": ""}
 # 4. Create the Agent
 
 custom_prefix = """
-You are working with three pandas DataFrames:
+You are a retail data expert working with df1, df2, and df3.
+You have access to three dataframes:
+- df1: events (link via customer_id/product_id)
+- df2: products
+- df3: customers
 
-- df_0 → retail_events data(event_id, customer_id, product_id, event_type, timestamp.)
-- df_1 → retail_products data (product_id, category, brand, price.)
-- df_2 → retail_customers data (customer_id, age, region, loyalty_tier.)
-
-Rules:
-- Always use Python pandas code
-- Use df_0, df_1, df_2 exactly as named
-- Join DataFrames when needed:
-    df_0.product_id = df_1.product_id
-    df_0.customer_id = df_2.customer_id
-- Return clear final answers.
-- Do not mention dataframes, df_1, df_2, df_3 in responses. 
+STRICT FORMATTING RULES:
+1. You must provide EITHER an 'Action' OR a 'Final Answer'. NEVER both in one turn.
+2. After you receive an 'Observation' with the data, stop and provide your 'Final Answer'.
+3. Do NOT include 'Question:' or 'Thought:' multiple times in a single response.
+4. If the code `df1['customer_id'].nunique()` returns 800, your next response must be:
+   Final Answer: There are 800 unique customers.
 """
 
 agent = create_pandas_dataframe_agent(
     llm,
     [df_0, df_1, df_2],
     verbose=True,
+    prefix=custom_prefix,
     allow_dangerous_code=True,
     handle_parsing_errors=True,
-    agent_executor_kwargs={"handle_parsing_errors": True}
+    agent_executor_kwargs={"handle_parsing_errors": True},
+    include_df_in_prompt=False 
 )
 
 # 5. Chat Interface
@@ -78,4 +78,3 @@ if prompt := st.chat_input("Ask me about the retail events..."):
             response = agent.run(prompt)
             st.markdown(response)
             st.session_state.messages.append({"role": "assistant", "content": response})
-
