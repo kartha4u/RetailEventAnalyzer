@@ -26,10 +26,9 @@ bedrock_runtime = boto3.client(service_name="bedrock-runtime", region_name="us-e
 
 llm = ChatBedrock(
     client=bedrock_runtime,
-    model_id="us.meta.llama4-maverick-17b-instruct-v1:0", # Or your preferred model
+    model_id="amazon.nova-pro-v1:0", # Or your preferred model
     model_kwargs={"temperature": 0}
-)
-llm.provider_stop_sequence_key_name_map = {"meta": ""}
+) 
 
 
 # 4. Create the Agent
@@ -46,7 +45,8 @@ STRICT FORMATTING RULES:
 2. After you receive an 'Observation' with the data, stop and provide your 'Final Answer'.
 3. After receive Final answer stop iteration and show response.
 4. Do NOT include 'Question:' or 'Thought:' multiple times in a single response.
-
+5. When showing a list as response, show the different items in the list in bullets in new line.
+6. Trim decimal places to one decimal value.
 CRITICAL: Do not include any text, links, or markdown code blocks (```) after the 'Final Answer:' line.
 """
 
@@ -57,7 +57,7 @@ agent = create_pandas_dataframe_agent(
     prefix=custom_prefix,
     allow_dangerous_code=True,
     # This specific string helps the agent self-correct when it fails to parse
-    handle_parsing_errors="Check your output format. Ensure 'Final Answer:' is at the very end and not followed by additional text.",
+    handle_parsing_errors=True,
     agent_executor_kwargs={"handle_parsing_errors": True},
     include_df_in_prompt=False,
     agent_type="zero-shot-react-description"  
