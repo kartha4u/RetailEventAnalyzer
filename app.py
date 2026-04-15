@@ -27,7 +27,12 @@ bedrock_runtime = boto3.client(service_name="bedrock-runtime", region_name="us-e
 llm = ChatBedrock(
     client=bedrock_runtime,
     model_id="amazon.nova-pro-v1:0", # Or your preferred model
-    model_kwargs={"temperature": 0}
+    model_kwargs={"temperature": 0},
+    guardrails={
+        "guardrailIdentifier": "lvv8hbu18cns", # e.g., 'abc123xyz'
+        "guardrailVersion": "1",                    # e.g., '1' or 'DRAFT'
+        "trace": 'enabled'                               # Optional: view filters in logs
+    }
 ) 
 
 
