@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import boto3
 from langchain_aws import ChatBedrock
-from langchain.agents.agent_types import AgentType
+
 from langchain_experimental.agents import create_pandas_dataframe_agent
 
 # 1. Page Config
