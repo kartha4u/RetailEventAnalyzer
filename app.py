@@ -31,7 +31,7 @@ llm = ChatBedrock(
     guardrails={
         "guardrailIdentifier": "lvv8hbu18cns", # e.g., 'abc123xyz'
         "guardrailVersion": "1",                    # e.g., '1' or 'DRAFT'
-        "trace": 'enabled'                               # Optional: view filters in logs
+        "trace": 'disabled'                               # Optional: view filters in logs
     }
 ) 
 
