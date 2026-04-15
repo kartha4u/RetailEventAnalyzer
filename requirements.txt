@@ -2,5 +2,6 @@ streamlit
 pandas
 boto3
 langchain
+langchain-community
 langchain-aws
 langchain-experimental
