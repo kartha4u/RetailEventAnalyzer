@@ -5,3 +5,4 @@ langchain
 langchain-community
 langchain-aws
 langchain-experimental
+faiss-cpu
